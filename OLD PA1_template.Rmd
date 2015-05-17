@@ -1,0 +1,90 @@
+# knitr Reproducible Research: Peer Assessment 1 Document
+Wayne S. Lewis
+
+## Introduction
+Peer Assessment 1 involves analysis and visualization of a personal movement activity monitoring data set.
+
+---
+output: 
+  html_document:
+    keep_md: true
+---
+## Loading and preprocessing the data
+
+First we load the data and add a column named "day" for the date in POSIXct format. We note, for example, that some days, like October 8, 2012, no readings were recorded.
+
+```{r load & process, echo=TRUE}
+
+library(dplyr, histogram)
+## library(xtable)
+u <- read.csv("activity.csv")
+v <- transform(u, date = as.POSIXct(date))
+v[which(v$date=="2012-10-08"), 1]
+
+```
+
+## What is mean total number of steps taken per day?
+
+We find the total number of steps taken per day and display the totals in a histogram..
+
+```{r histogram, echo=TRUE}
+
+days <- group_by(v, date)
+w <- summarize(days, sum = sum(steps), mean = mean(steps,na.rm=T), median = median(steps,na.rm=T))
+hist(w$sum, col='blue', main="Steps Per Day",xlab="Steps", ylab="Days")
+
+```
+
+We display in a table the mean and the median number of steps taken each day. The mean on October 8, 2012, for example, displays "NaN" for the mean - this occurs when the "na.rm=TRUE" option is used for the mean when all the values are "NA".
+
+```{r setup, include=FALSE}
+
+library(xtable)
+source("styles.R")
+options(rstudio.markdownToHTML = 
+       function(inputFile, outputFile) {      
+       require(markdown)
+       markdownToHTML(inputFile, outputFile, stylesheet='custom.css')   
+      }
+)
+
+xtable <- function(x, ...) {
+   for (i in which(sapply(x, function(y) !all(is.na(match(c("POSIXct"),class(y))))))) x[[i]] <- as.character(x[[i]])
+   xtable::xtable(x, ...)
+                           }
+
+```
+
+```{r means & medians table, results="asis", echo=TRUE}
+
+xt <- xtable(select(w, date, sum, mean, median))
+print(xt, type = "html", include.rownames=FALSE)
+
+```
+
+
+
+## What is the average daily activity pattern?
+
+
+
+
+## Imputing missing values
+
+
+
+## Are there differences in activity patterns between weekdays and weekends?
+
+
+
+hist(x$day, col='blue', breaks="days", main="Total Steps Per Day",xlab="", ylab="Steps")
+t <- View(select(w, date, mean, median))
+print(t, type="html")
+
+xtable <- function(x, ...) {
+   for (i in which(sapply(x, function(y) !all(is.na(match(c("POSIXt","POSIXct","Date"),class(y))))))) x[[i]] <- as.character(x[[i]])
+   xtable::xtable(x, ...)
+}
+
+
+

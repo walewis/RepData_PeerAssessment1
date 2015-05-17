@@ -1,15 +1,5 @@
----
-title: "Reproducibility Research Project 1"
-author: "Wayne Lewis"
-output:
-  html_document:
-    self_contained: false
-    keep_md: true
-    theme: null
-    highlight: null
-    includes:
-      in_header: header.html
----
+# Reproducibility Research Project 1
+Wayne Lewis  
 The metadata section of this R markdown file includes the title, author, and options for customizing output. The options define the characteristics for the PA1 template files generated when the RStudio "Knit HTML" button is clicked. The header.html file referenced in the metadata has one line of HTML code; the metadata header command adds this line of code to the header of the generated PA1_template.html file, which in turn forces the "hwriter.css" style sheet to be used; this style sheet enables more flexible formatting for tables generated in R.
 
 ## Introduction
@@ -20,8 +10,8 @@ Peer Assessment 1 involves analysis and visualization of a personal movement act
 
 First we load the data and convert the date column to POSIXct format. Note that some days, like October 8, 2012, have no recorded readings: all values for the "steps" variable are NA for this date.
 
-```{r load & process, echo=TRUE, cache=TRUE}
 
+```r
 ## install dplyr, hwriter, histogram, and ggplot2 packages
 ## cache=TRUE caches this code chunk for later reuse.
 
@@ -37,21 +27,43 @@ v <- transform(u, Date = as.POSIXct(date))
 v <- select(v, steps, interval, Date)
 
 head(v)
+```
 
+```
+##   steps interval       Date
+## 1    NA        0 2012-10-01
+## 2    NA        5 2012-10-01
+## 3    NA       10 2012-10-01
+## 4    NA       15 2012-10-01
+## 5    NA       20 2012-10-01
+## 6    NA       25 2012-10-01
+```
+
+```r
 ## We illustrate that the number of readings dated 2012-10-08
 ## is the same as the number of missing values dated 2012-10-08.
 
 length(v[which(v$Date=="2012-10-08"), 1])
-length(v[which(v$Date=="2012-10-08"), 1][] == NA)
+```
 
+```
+## [1] 288
+```
+
+```r
+length(v[which(v$Date=="2012-10-08"), 1][] == NA)
+```
+
+```
+## [1] 288
 ```
 
 ## What is mean total number of steps taken per day?
 
 Next, we display the total number of steps taken per day in a table.
 
-```{r table of steps per day, results='asis', echo=TRUE, fig.align='center', cache=TRUE}
 
+```r
 ## The "asis" option above ensures that the table is rendered
 ## from the HTML code generated in this code block. The dplyr 
 ## summarize function is used to find the total number of 
@@ -83,24 +95,152 @@ days <- group_by(v, Date)
 w <- summarize(days, Steps = sum(steps))
 
 cat(hwrite(w, 'test.html', center=TRUE, row.bgcolor='#ffdc98', row.style=list('font-weight:bold;text-align:center'), col.style=list(Date='text-align:center', Steps='text-align:center', col.width=rep('30px', nrow(w))), width='300px'))
-
 ```
+
+<center><table width="300px" border="1">
+<tr>
+<td bgcolor="#ffdc98" style="font-weight:bold;text-align:center">Date</td><td bgcolor="#ffdc98" style="font-weight:bold;text-align:center">Steps</td></tr>
+<tr>
+<td style="text-align:center">2012-10-01</td><td style="text-align:center">&nbsp;</td></tr>
+<tr>
+<td style="text-align:center">2012-10-02</td><td style="text-align:center">  126</td></tr>
+<tr>
+<td style="text-align:center">2012-10-03</td><td style="text-align:center">11352</td></tr>
+<tr>
+<td style="text-align:center">2012-10-04</td><td style="text-align:center">12116</td></tr>
+<tr>
+<td style="text-align:center">2012-10-05</td><td style="text-align:center">13294</td></tr>
+<tr>
+<td style="text-align:center">2012-10-06</td><td style="text-align:center">15420</td></tr>
+<tr>
+<td style="text-align:center">2012-10-07</td><td style="text-align:center">11015</td></tr>
+<tr>
+<td style="text-align:center">2012-10-08</td><td style="text-align:center">&nbsp;</td></tr>
+<tr>
+<td style="text-align:center">2012-10-09</td><td style="text-align:center">12811</td></tr>
+<tr>
+<td style="text-align:center">2012-10-10</td><td style="text-align:center"> 9900</td></tr>
+<tr>
+<td style="text-align:center">2012-10-11</td><td style="text-align:center">10304</td></tr>
+<tr>
+<td style="text-align:center">2012-10-12</td><td style="text-align:center">17382</td></tr>
+<tr>
+<td style="text-align:center">2012-10-13</td><td style="text-align:center">12426</td></tr>
+<tr>
+<td style="text-align:center">2012-10-14</td><td style="text-align:center">15098</td></tr>
+<tr>
+<td style="text-align:center">2012-10-15</td><td style="text-align:center">10139</td></tr>
+<tr>
+<td style="text-align:center">2012-10-16</td><td style="text-align:center">15084</td></tr>
+<tr>
+<td style="text-align:center">2012-10-17</td><td style="text-align:center">13452</td></tr>
+<tr>
+<td style="text-align:center">2012-10-18</td><td style="text-align:center">10056</td></tr>
+<tr>
+<td style="text-align:center">2012-10-19</td><td style="text-align:center">11829</td></tr>
+<tr>
+<td style="text-align:center">2012-10-20</td><td style="text-align:center">10395</td></tr>
+<tr>
+<td style="text-align:center">2012-10-21</td><td style="text-align:center"> 8821</td></tr>
+<tr>
+<td style="text-align:center">2012-10-22</td><td style="text-align:center">13460</td></tr>
+<tr>
+<td style="text-align:center">2012-10-23</td><td style="text-align:center"> 8918</td></tr>
+<tr>
+<td style="text-align:center">2012-10-24</td><td style="text-align:center"> 8355</td></tr>
+<tr>
+<td style="text-align:center">2012-10-25</td><td style="text-align:center"> 2492</td></tr>
+<tr>
+<td style="text-align:center">2012-10-26</td><td style="text-align:center"> 6778</td></tr>
+<tr>
+<td style="text-align:center">2012-10-27</td><td style="text-align:center">10119</td></tr>
+<tr>
+<td style="text-align:center">2012-10-28</td><td style="text-align:center">11458</td></tr>
+<tr>
+<td style="text-align:center">2012-10-29</td><td style="text-align:center"> 5018</td></tr>
+<tr>
+<td style="text-align:center">2012-10-30</td><td style="text-align:center"> 9819</td></tr>
+<tr>
+<td style="text-align:center">2012-10-31</td><td style="text-align:center">15414</td></tr>
+<tr>
+<td style="text-align:center">2012-11-01</td><td style="text-align:center">&nbsp;</td></tr>
+<tr>
+<td style="text-align:center">2012-11-02</td><td style="text-align:center">10600</td></tr>
+<tr>
+<td style="text-align:center">2012-11-03</td><td style="text-align:center">10571</td></tr>
+<tr>
+<td style="text-align:center">2012-11-04</td><td style="text-align:center">&nbsp;</td></tr>
+<tr>
+<td style="text-align:center">2012-11-05</td><td style="text-align:center">10439</td></tr>
+<tr>
+<td style="text-align:center">2012-11-06</td><td style="text-align:center"> 8334</td></tr>
+<tr>
+<td style="text-align:center">2012-11-07</td><td style="text-align:center">12883</td></tr>
+<tr>
+<td style="text-align:center">2012-11-08</td><td style="text-align:center"> 3219</td></tr>
+<tr>
+<td style="text-align:center">2012-11-09</td><td style="text-align:center">&nbsp;</td></tr>
+<tr>
+<td style="text-align:center">2012-11-10</td><td style="text-align:center">&nbsp;</td></tr>
+<tr>
+<td style="text-align:center">2012-11-11</td><td style="text-align:center">12608</td></tr>
+<tr>
+<td style="text-align:center">2012-11-12</td><td style="text-align:center">10765</td></tr>
+<tr>
+<td style="text-align:center">2012-11-13</td><td style="text-align:center"> 7336</td></tr>
+<tr>
+<td style="text-align:center">2012-11-14</td><td style="text-align:center">&nbsp;</td></tr>
+<tr>
+<td style="text-align:center">2012-11-15</td><td style="text-align:center">   41</td></tr>
+<tr>
+<td style="text-align:center">2012-11-16</td><td style="text-align:center"> 5441</td></tr>
+<tr>
+<td style="text-align:center">2012-11-17</td><td style="text-align:center">14339</td></tr>
+<tr>
+<td style="text-align:center">2012-11-18</td><td style="text-align:center">15110</td></tr>
+<tr>
+<td style="text-align:center">2012-11-19</td><td style="text-align:center"> 8841</td></tr>
+<tr>
+<td style="text-align:center">2012-11-20</td><td style="text-align:center"> 4472</td></tr>
+<tr>
+<td style="text-align:center">2012-11-21</td><td style="text-align:center">12787</td></tr>
+<tr>
+<td style="text-align:center">2012-11-22</td><td style="text-align:center">20427</td></tr>
+<tr>
+<td style="text-align:center">2012-11-23</td><td style="text-align:center">21194</td></tr>
+<tr>
+<td style="text-align:center">2012-11-24</td><td style="text-align:center">14478</td></tr>
+<tr>
+<td style="text-align:center">2012-11-25</td><td style="text-align:center">11834</td></tr>
+<tr>
+<td style="text-align:center">2012-11-26</td><td style="text-align:center">11162</td></tr>
+<tr>
+<td style="text-align:center">2012-11-27</td><td style="text-align:center">13646</td></tr>
+<tr>
+<td style="text-align:center">2012-11-28</td><td style="text-align:center">10183</td></tr>
+<tr>
+<td style="text-align:center">2012-11-29</td><td style="text-align:center"> 7047</td></tr>
+<tr>
+<td style="text-align:center">2012-11-30</td><td style="text-align:center">&nbsp;</td></tr>
+</table>
+</center>
 
 
 We illustrate the "density" of steps per day with a histogram.
 
-```{r histogram, echo=TRUE, fig.align='center',cache=TRUE}
 
+```r
 suppressMessages(library(histogram))
 
 hist(w$Steps, col='blue', main="Histogram for Steps per Day", xlab="Steps per Day", ylab="Frequency")
-
 ```
+
+<img src="PA1_template_files/figure-html/histogram-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 We display in a table the mean number of steps per day and the median number of steps per day. 
 
-```{r means & medians table, results='asis', echo=TRUE, cache=TRUE}
 
+```r
 suppressMessages(library(dplyr))
 
 ## We use the dplyr mutate option to calculate Mean and Median per day,
@@ -123,7 +263,17 @@ z <- y[1, ]
 ## centers the table on the page.
 
 cat(hwrite(z, 'test2.html', center=TRUE, row.bgcolor='#ffdc98', row.style=list('font-weight:bold;text-align:center'), col.style=list(Mean='text-align:center', Median='text-align:center'), width='500px'))
+```
 
+<center><table width="500px" border="1">
+<tr>
+<td bgcolor="#ffdc98" style="font-weight:bold;text-align:center">Mean</td><td bgcolor="#ffdc98" style="font-weight:bold;text-align:center">Median</td></tr>
+<tr>
+<td style="text-align:center">10766.1886792453</td><td style="text-align:center">10765</td></tr>
+</table>
+</center>
+
+```r
 ## The save.image command below saves the current workspace to 
 ## the .RData file. If there is a need to accesss the variables 
 ## used in code blocks within the R markdown file, then we can use 
@@ -131,7 +281,6 @@ cat(hwrite(z, 'test2.html', center=TRUE, row.bgcolor='#ffdc98', row.style=list('
 ## into the workspace.
 
 save.image()
-
 ```
 
 ## What is the average daily activity pattern?
@@ -140,31 +289,56 @@ Here we generate a time series plot with the 5-minute intervals
 on the x-axis and the average number of steps taken, averaged 
 across all days, on the y-axis.
 
-```{r Time Series Plot, echo=TRUE, fig.align='center', cache=TRUE}
 
+```r
 ## Between October 1 and November 30 there is a
 
 m <- as.Date(u$date[nrow(u)])-as.Date(u$date[1])
 print(m)
+```
+
+```
+## Time difference of 60 days
+```
+
+```r
 n <- as.integer(m)
 
 ## So October/November days can be represented by adding 0,1,2,...,n to
 
 as.Date("2012-10-01")
+```
 
+```
+## [1] "2012-10-01"
+```
+
+```r
 ## to get maximum number of 5-minute intervals in any given day:
 
 y <- vector(mode="integer",length=n+1)
 for (i in 1:n+1) {y[i] <- length(u[u$date==toString(as.Date("2012-10-01")+(i-1)),2])}
 p <- max(y)
 print(p)
+```
 
+```
+## [1] 288
+```
+
+```r
 ## Now we group all the data in the data frame u according to
 ## the values appearing in the interval column. The number of
 ## distinct values for the interval variable is
 
 length(unique(u$interval))
+```
 
+```
+## [1] 288
+```
+
+```r
 ## and for each of these distinct values there are n+1
 ## distinct observations corresponding to p unique
 ## interval codes:
@@ -189,35 +363,58 @@ f <- function(x){for (i in 1:p) x[i] <- i
      return(x)  }
 
 plot(unique(u$interval), IntervalMean[f(unique(u$interval))],type="l", xlab="5-Minute Interval Codes",ylab="Average Number of Steps",main="Average Number of Steps per 5-Minute Interval Code") 
-
 ```
+
+<img src="PA1_template_files/figure-html/Time Series Plot-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 Here we determine the 5-minute interval which had the maximum average
 number of steps.
 
-```{r Max Average, echo=TRUE, cache=T}
 
+```r
 ## The maximum occurs at once with value max(IntervalMean).
 
 which.max(IntervalMean)
-max(IntervalMean)
+```
 
+```
+## [1] 104
+```
+
+```r
+max(IntervalMean)
+```
+
+```
+## [1] 206.1698
+```
+
+```r
 ## The 5-minute inteval where the maximum occurs is found by
 ## looking at index which.max(IntervalMean) in u$interval:
 
 u$interval[which.max(IntervalMean)]
+```
 
+```
+## [1] 835
+```
+
+```r
 ## We can verify our work by computing the mean of all
 ## step-counts associated with thsi interval:
 
 mean(u$steps[u$interval == u$interval[which.max(IntervalMean)]], na.rm=T)
+```
 
+```
+## [1] 206.1698
 ```
 
 ## Imputing missing values
 
-```{r Input Missing Values, echo=TRUE}
 
+```r
 ## Vector of indices where u$steps is "NA":
 
 t <- is.na(u$steps)
@@ -225,7 +422,10 @@ t <- is.na(u$steps)
 ## Number of missing values in data set:
 
 sum(t)
+```
 
+```
+## [1] 2304
 ```
 
 
